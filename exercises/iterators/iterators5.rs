@@ -11,7 +11,6 @@
 // Execute `rustlings hint iterators5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 use std::collections::HashMap;
 
@@ -35,7 +34,8 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
-    todo!();
+    //这里使用到了引用匹配&v来匹配&（&String，&Progress）的&&Progress，然后v就是&Progress，然后编译器自动解引用
+    map.iter().filter(|(_,&v)| v==value).count()
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -54,7 +54,14 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // collection is a slice of hashmaps.
     // collection = [{ "variables1": Complete, "from_str": None, ... },
     //     { "variables2": Complete, ... }, ... ]
-    todo!();
+    //collection.iter()每次返回的都是Item &HashMap<String, Progress>
+    //map.iter() → Iterator<Item = (&String, &Progress)> 里面的闭包把&HashMap<>转换成了Iterator
+    //flat_map将所有小迭代器拼成大迭代器
+    //不可以直接collection.iter().iter()这个迭代器没有.iter()方法
+    collection.iter()
+    .flat_map(|map| map.iter())
+    .filter(|(_, &v)| v == value)
+    .count()
 }
 
 #[cfg(test)]
