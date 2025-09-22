@@ -3,16 +3,16 @@
 // Execute `rustlings hint macros4` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 #[rustfmt::skip]
 macro_rules! my_macro {
-    () => {
-        println!("Check out my macro!");
-    }
+    //macro_rules! 要求多个规则之间必须用分号或逗号隔开
     ($val:expr) => {
         println!("Look at this other macro: {}", $val);
-    }
+    };
+    () => {
+        println!("Check out my macro!");
+    };
 }
 
 fn main() {
