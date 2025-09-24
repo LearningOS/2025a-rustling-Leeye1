@@ -27,7 +27,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
 
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
@@ -41,6 +40,27 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        // match tuple {
+        //     (r,g,b) if (
+        //         r<=u8::MAX && r>=u8::MIN && 
+        //         g<=u8::MAX && g>=u8::MIN && 
+        //         b<=u8::MAX && b>=u8::MIN) => {
+        //         return Ok(
+        //             Color{
+        //                 red:r as u8,
+        //                 green:g as u8,
+        //                 blue:b as u8,
+        //             }
+        //         )
+        //     },
+        //     (_,_,_) => { return Err(Self::Error::IntConversion)}
+        // }
+        //tuple可以用.n序号来访问顺序元素
+        Ok(Color {
+            red: u8::try_from(tuple.0).map_err(|_| Self::Error::IntConversion)?,
+            green: u8::try_from(tuple.1).map_err(|_| Self::Error::IntConversion)?,
+            blue: u8::try_from(tuple.2).map_err(|_| Self::Error::IntConversion)?,
+        })
     }
 }
 
@@ -48,6 +68,12 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        Ok(Color {
+            //这里尝试着把i16转换成u8然后然后通过map_err转换成自定义err，最后通过？号来赋ok里的值或者Err
+            red: u8::try_from(arr[0]).map_err(|_| Self::Error::IntConversion)?,
+            green: u8::try_from(arr[1]).map_err(|_| Self::Error::IntConversion)?,
+            blue: u8::try_from(arr[2]).map_err(|_| Self::Error::IntConversion)?,
+        })    
     }
 }
 
@@ -55,6 +81,12 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3 { return Err(Self::Error::BadLen)}
+        Ok(Color {
+            red: u8::try_from(slice[0]).map_err(|_| Self::Error::IntConversion)?,
+            green: u8::try_from(slice[1]).map_err(|_| Self::Error::IntConversion)?,
+            blue: u8::try_from(slice[2]).map_err(|_| Self::Error::IntConversion)?,
+        })
     }
 }
 
