@@ -10,7 +10,6 @@
 // hint.
 
 
-
 use std::f32;
 
 fn main() {

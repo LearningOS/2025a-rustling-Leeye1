@@ -7,7 +7,6 @@
 // Execute `rustlings hint tests6` or use the `hint` watch subcommand for a
 // hint.
 
-
 struct Foo {
     a: u128,
     b: Option<String>,
